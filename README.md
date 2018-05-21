@@ -39,6 +39,8 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 
 
 ### Other ideas
+### Needed :
+* C programs with statically and dynamically linked libraries to make tests --> quite URGENT 
 
 ## En cours :
 * check if section header : Justine
