@@ -25,7 +25,7 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 
 ## Encore a faire
 ### Asked
-* session header table pointing beyond file data
+
 * wrong string table index
 * overlapping headers/segments
 * unusual entropy of a section
@@ -39,11 +39,12 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 
 
 ### Other ideas
+* check if section header : Justine
 ### Needed :
 * C programs with statically and dynamically linked libraries to make tests --> quite URGENT 
 
 ## En cours :
-* check if section header : Justine
+* session header table pointing beyond file data
 
 ## Fait :
 * no symbols info 
