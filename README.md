@@ -30,9 +30,8 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 * overlapping headers/segments
 * unusual entropy of a section
 * strange segment permissions
-* weird entry point
 * different interpreter
-* \_start that does not call \_\_libc\_start\_main
+
 
 * option to fix some issues (related to corrupted headers)
 
@@ -49,4 +48,6 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 ## Fait :
 * no symbols info 
 * make it usable in command lines
+* \_start that does not call \_\_libc\_start\_main
+* weird entry point
 
