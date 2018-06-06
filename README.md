@@ -42,7 +42,21 @@ For example, typical text segments have read and execute, but not write permissi
 * README -> lief,...
 
 ### Other ideas
-* check if section header : Justine
+* check if section header : 
+* signes d'un packer :
+Very few functions
+✔
+Few entries in the import table
+✔
+Missing or compressed string table
+✔
+Very small code  
+✔
+Code section that requires more space in memory than on disk
+✔
+Weird sections names 
+✔
+Sections with very high entropy 
 ### Needed :
 * C programs with statically and dynamically linked libraries to make tests --> quite URGENT 
 
