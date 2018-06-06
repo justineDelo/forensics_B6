@@ -42,7 +42,7 @@ For example, typical text segments have read and execute, but not write permissi
 * README -> lief,...
 
 ### Other ideas
-* check if section header : 
+
 * signes d'un packer :
 Very few functions
 ✔
@@ -69,4 +69,5 @@ Sections with very high entropy
 * \_start that does not call \_\_libc\_start\_main
 * weird entry point
 * unusual entropy of a section
+* check if section header 
 

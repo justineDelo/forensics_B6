@@ -46,6 +46,18 @@ def entropy(fileName) :
             liste_out.append((s.name, s.entropy))
     return liste_out
         
+def section_header(fileName) :
+    command="readelf -S "+fileName
+    out=subprocess.getoutput(command)
+    if(("ERREUR" in out) or ("erreur" in out) or ("error" in out) or ("ERROR" in out)) :
+        return False
+    elif ("[ 0]" not in out):
+        return False
+    else :
+        return True
+    
+    
+    
 
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
@@ -67,6 +79,14 @@ def main(fileName) :
         print("check symbols ok\n")
     number_tests_performed+=1
     
+    sec_hd = section_header(fileName)
+    if(not(sec_hd)) :
+        print("Weird : nos section headers\n")
+        number_anomalies_found+=1
+    else :
+        print("check section headers ok\n")
+    number_tests_performed+=1
+    
     start=start_libc(fileName)
     if(start=="bad") :
         print("Weird : start_libc not called\n")
@@ -75,6 +95,7 @@ def main(fileName) :
         print("check libc_start ok\n")
     else :
         print("Weird : is libc_start called ? " +start+"\n")
+        number_anomalies_found+=1
     number_tests_performed+=1
         
     entry=entry_point_start(fileName)
