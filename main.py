@@ -55,9 +55,47 @@ def section_header(fileName) :
         return False
     else :
         return True
+
+
+def segments_overlap(fileName, virtual_or_physical) :
+    file=lief.parse(fileName)
+    liste_couples=[]
+    overlapping_segments=[]
+    for s in file.segments :
+   
+        if(virtual_or_physical==0) :
+            couple=(s.virtual_address, s.virtual_size)
+        else :
+            couple=(s.physical_address, s.physical_size)
+        liste_couples.append(couple)
+        
+    for seg1 in range(0, len(liste_couples)-1) :
+        for seg2 in range(seg1+1, len(liste_couples)) :
+            if (overlap(liste_couples[seg1], liste_couples[seg2]) ):
+      
+                overlapping_segments.append((seg1, seg2))
+                
+    return overlapping_segments
     
-    
-    
+def overlap(seg1,seg2) : #seg1 and seg2 are couples (start, size)
+    print(seg1)
+    print(seg2)
+    if (seg1[0]<seg2[0]) :
+        if seg2[0]<seg1[0]+seg1[1] :
+            print("overlap")
+            return True
+        else :
+            print("no overlap")
+            return False
+    elif (seg2[0]<seg1[0]) :
+        if(seg1[0]<seg2[0]+seg2[1]) :
+            print("overlap2")
+            return True
+        else :
+            print("no overlap2")
+            return False
+    else :
+        return True
 
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
@@ -117,6 +155,46 @@ def main(fileName) :
         print("\n")
         number_anomalies_found+=1
     number_tests_performed+=1
+    f=lief.parse(fileName)
+    overlapping=segments_overlap(fileName,0)
+    if(not(overlapping)) :
+        print("check no overlapping segments (virtual addresses) ok\n")
+    else :
+        print("Weird : there are some overlapping segments detected (virtual addresses)")
+        ans=""
+        while(ans!="y" and ans !="Y" and ans!="yes" and ans!="Yes" and ans!="n" and ans!="no" and ans!="N" and ans!="No") :
+            ans=input("Do you want to print the overlapping segments ? (Yes/No or y/n)\n")
+            if (ans == 'y' or ans=='Y' or ans=='yes' or ans=="Yes") :
+                print(" Here are the segments that are overlapping : ")
+                for couple in overlapping :
+                    
+                    print("  ",f.segments[couple[0]])
+                    print(" is overlapping with :")
+                    print("  ",f.segments[couple[1]])
+                    print("\n")
+        print("\n")
+        number_anomalies_found+=1
+    number_tests_performed+=1
+    
+    overlapping2=segments_overlap(fileName,1)
+    if(not(overlapping2)) :
+        print("check no overlapping segments (physical addresses) ok\n")
+    else :
+        print("Weird : there are some overlapping segments detected (physical addresses)")
+        ans=""
+        while(ans!="y" and ans !="Y" and ans!="yes" and ans!="Yes" and ans!="n" and ans!="no" and ans!="N" and ans!="No") :
+            ans=input("Do you want to print the overlapping segments ? (Yes/No or y/n)\n")
+            if (ans == 'y' or ans=='Y' or ans=='yes' or ans=="Yes") :
+                print(" Here are the segments that are overlapping : ")
+                for couple in overlapping2 :
+                    print("  ",f.segments[couple[0]])
+                    print(" is overlapping with :")
+                    print("  ",f.segments[couple[1]])
+                    print("\n")
+        print("\n")
+        number_anomalies_found+=1
+    number_tests_performed+=1
+    
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 
