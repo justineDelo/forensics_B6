@@ -17,7 +17,7 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 * \_start that does not call \_\_libc\_start\_main
 
 * option to fix some issues (related to corrupted headers)
-
+* catch errorss
 * make it usable in command lines
 
 ### Other ideas
@@ -28,14 +28,13 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 
 * wrong string table index
 * overlapping headers/segments
-* unusual entropy of a section
 * strange segment permissions
 * different interpreter
-
-
+* session header table pointing beyond file data
+* catch errors
 * option to fix some issues (related to corrupted headers)
 
-
+* README -> lief,...
 
 ### Other ideas
 * check if section header : Justine
@@ -43,11 +42,12 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 * C programs with statically and dynamically linked libraries to make tests --> quite URGENT 
 
 ## En cours :
-* session header table pointing beyond file data
+
 
 ## Fait :
 * no symbols info 
 * make it usable in command lines
 * \_start that does not call \_\_libc\_start\_main
 * weird entry point
+* unusual entropy of a section
 
