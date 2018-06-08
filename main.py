@@ -35,11 +35,20 @@ def entry_point_start(fileName) :
     output=subprocess.getoutput(command)
     addr2=output.split(" ")[0].lstrip("0")
     return addr1==addr2
+    
+def entry_section(fileName):
+    file=lief.parse(fileName)
+    entry=file.entrypoint
+        for s in file.sections:
+            if s.name==".text" or s.name==".code":
+                if(entry>=s.offset and entry<=s.size+s.offset):
+                    return True
+    return False
 
 def entropy(fileName) :
     threshold=6;
     liste_out=[]
-    file=lief.parse(fileName)
+
     
     for s in file.sections :
         if s.entropy>=threshold :
@@ -163,6 +172,14 @@ def main(fileName) :
         print("check entry_point ok\n")
     number_tests_performed+=1
     
+    entry_sec=entry_section(fileName)
+    if(entry_sec)
+        print("Weird : The entry point is neither in .text section nor in .code section\n")
+        number_anomalies_found+=1
+    else :
+        print("Entry point section ok\n")
+    number_tests_performed+=1
+    
     entrop=entropy(fileName)
     if (not(entrop)) :
         print("check entropy ok (all section's entropy under 6)\n")
@@ -174,6 +191,7 @@ def main(fileName) :
         print("\n")
         number_anomalies_found+=1
     number_tests_performed+=1
+    
     f=lief.parse(fileName)
     overlapping=segments_overlap(fileName,0)
     if(not(overlapping)) :
@@ -222,7 +240,7 @@ def main(fileName) :
     else :
         print("Segments Permissions ok\n")
     number_tests_performed+=1
-    
+
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 

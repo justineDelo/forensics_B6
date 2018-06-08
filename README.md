@@ -29,8 +29,6 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 * wrong string table index
 * overlapping headers/segments
 
-* entry point not in .code or .text segment
-
 * different interpreter
 * session header table pointing beyond file data
 
@@ -66,6 +64,7 @@ Sections with very high entropy
 * make it usable in command lines
 * \_start that does not call \_\_libc\_start\_main
 * weird entry point
+* entry point not in .code or .text segment
 * unusual entropy of a section
 * check if section header 
 * strange segment permissions
