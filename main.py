@@ -3,7 +3,7 @@
 """
 Created on Mon May 21 18:01:56 2018
 
-@author: justine
+@author: justine and paul
 """
 import subprocess # to be able to use command line tools
 import lief
@@ -96,16 +96,23 @@ def overlap(seg1,seg2) : #seg1 and seg2 are couples (start, size)
             return False
     else :
         return True
-        
+
+usual_segments_flag={'SEGMENT_TYPES.PHDR':5,'SEGMENT_TYPES.INTERP':4,'SEGMENT_TYPES.DYNAMIC':6,'SEGMENT_TYPES.NOTE':4,'SEGMENT_TYPES.GNU_EH_FRAME':4,'SEGMENT_TYPES.GNU_STACK':6,'SEGMENT_TYPES.GNU_RELRO':4 }
+
 def segments_flag(fileName) :
     out_msg=""
     file=lief.parse(fileName)
     
     for s in file.segments :
-        if (s.has(".text") & s.flags!=5 ):
-            out_msg="   .text segment is not read and execute"
-        if (s.has(".data") & s.flags!=7 ):
-            out_msg="   .data segment is not read and execute and execute" 
+        if (s.flags<0 or s.flags>7 ):
+            out_msg+="   unknown flag ("+str(s.flags)+") for "+str(str(s.type)[14:])+" section"
+        elif (str(s.type)=='SEGMENT_TYPES.LOAD'):
+            if not(s.flags==5 or s.flags==6):
+                out_msg+="   weird flags for LOAD section ("+str(s.flags)+")"
+        else :
+            if str(s.type) in usual_segments_flag:
+                if (usual_segments_flag[str(s.type)]!=s.flags ):
+                    out_msg+="   weird flags ("+str(s.flags)+") for "+str(s.type)[14:]+" section"
     return out_msg            
 
 
