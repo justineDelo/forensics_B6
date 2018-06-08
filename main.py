@@ -96,6 +96,18 @@ def overlap(seg1,seg2) : #seg1 and seg2 are couples (start, size)
             return False
     else :
         return True
+        
+def segments_flag(fileName) :
+    out_msg=""
+    file=lief.parse(fileName)
+    
+    for s in file.segments :
+        if (s.has(".text") & s.flags!=5 :
+            out_msg="   .text segment is not read and execute"
+        if (s.has(".data") & s.flags!=7 :
+            out_msg="   .data segment is not read and execute and execute" 
+    return out_msg            
+
 
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
@@ -193,6 +205,15 @@ def main(fileName) :
                     print("\n")
         print("\n")
         number_anomalies_found+=1
+    number_tests_performed+=1
+    
+    segFlag=segments_flag(fileName)
+    if(segFlag) :
+        print("Weird : Unusual segments Permissions\n")
+        print(segFlag)
+        number_anomalies_found+=1
+    else :
+        print("Segments Permissions ok\n")
     number_tests_performed+=1
     
     #conclusion
