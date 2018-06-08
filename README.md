@@ -29,8 +29,6 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 * wrong string table index
 * overlapping headers/segments
 
-* strange segment permissions :
-For example, typical text segments have read and execute, but not write permissions. Data segments normally have read, write, and execute permissions. 
 * entry point not in .code or .text segment
 
 * different interpreter
@@ -70,4 +68,4 @@ Sections with very high entropy
 * weird entry point
 * unusual entropy of a section
 * check if section header 
-
+* strange segment permissions
