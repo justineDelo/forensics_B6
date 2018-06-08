@@ -102,9 +102,9 @@ def segments_flag(fileName) :
     file=lief.parse(fileName)
     
     for s in file.segments :
-        if (s.has(".text") & s.flags!=5 :
+        if (s.has(".text") & s.flags!=5 ):
             out_msg="   .text segment is not read and execute"
-        if (s.has(".data") & s.flags!=7 :
+        if (s.has(".data") & s.flags!=7 ):
             out_msg="   .data segment is not read and execute and execute" 
     return out_msg            
 
