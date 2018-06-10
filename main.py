@@ -86,21 +86,21 @@ def segments_overlap(fileName, virtual_or_physical) :
     return overlapping_segments
     
 def overlap(seg1,seg2) : #seg1 and seg2 are couples (start, size)
-    print(seg1)
-    print(seg2)
+    #print(seg1)
+    #print(seg2)
     if (seg1[0]<seg2[0]) :
         if seg2[0]<seg1[0]+seg1[1] :
-            print("overlap")
+            #print("overlap")
             return True
         else :
-            print("no overlap")
+            #print("no overlap")
             return False
     elif (seg2[0]<seg1[0]) :
         if(seg1[0]<seg2[0]+seg2[1]) :
-            print("overlap2")
+            #print("overlap2")
             return True
         else :
-            print("no overlap2")
+            #print("no overlap2")
             return False
     else :
         return True
@@ -113,11 +113,14 @@ def segments_flag(fileName) :
     
     for s in file.segments :
         if (s.flags<0 or s.flags>7 ):
+        
             out_msg+="   unknown flag ("+str(s.flags)+") for "+str(str(s.type)[14:])+" section"
         elif (str(s.type)=='SEGMENT_TYPES.LOAD'):
+        
             if not(s.flags==5 or s.flags==6):
                 out_msg+="   weird flags for LOAD section ("+str(s.flags)+")"
         else :
+          
             if str(s.type) in usual_segments_flag:
                 if (usual_segments_flag[str(s.type)]!=s.flags ):
                     out_msg+="   weird flags ("+str(s.flags)+") for "+str(s.type)[14:]+" section"
@@ -176,7 +179,7 @@ def main(fileName) :
         print("Weird : The entry point is neither in .text section nor in .code section\n")
         number_anomalies_found+=1
     else :
-        print("Entry point section ok\n")
+        print("Check entry point section ok\n")
     number_tests_performed+=1
     
     entrop=entropy(fileName)
