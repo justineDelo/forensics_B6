@@ -171,6 +171,16 @@ def missing_strtables(fileName):
         sizeNull.append(".shstrtab")
     return missing, sizeNull
 
+def pgm_h_outside(fileName):
+    ### check if the program header points outside the file
+    file=lief.parse(fileName)
+    last_section_offset=file.last_offset_section
+    for seg in file.segments :
+        if seg.file_offset >last_section_offset :
+            return True
+    return False
+    
+
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
     
@@ -329,6 +339,13 @@ def main(fileName) :
             print("\n")
     number_tests_performed+=1  
     
+    out=pgm_h_outside(fileName)
+    if(out) :
+        print("Weird : one or more segments in the program header are pointing outside the file\n")
+        number_anomalies_found+=1
+    else :
+        print("check program header pointing inside the file ok\n")
+    number_tests_performed+=1  
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 

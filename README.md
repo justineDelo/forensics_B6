@@ -30,7 +30,7 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 
 * session header table pointing beyond file data
 
-* catch errors
+* catch errors ?
 * option to fix some issues (related to corrupted headers)
 
 * README -> lief,...
@@ -44,12 +44,13 @@ Very few functions
 Sections with very high entropy 
 ✔
 Code section that requires more space in memory than on disk
+Missing or compressed string table
+✔
 	a faire :
 	
 Few entries in the import table
 ✔
-Missing or compressed string table
-✔
+
 Very small code
 
 ✔
@@ -73,3 +74,4 @@ Weird sections names
 * different interpreter
 * strange segment permissions
 * overlapping headers/segments
+* program header pointing beyond file data
