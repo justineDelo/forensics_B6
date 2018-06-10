@@ -90,6 +90,16 @@ def segments_overlap(fileName, virtual_or_physical) :
                 overlapping_segments.append((seg1, seg2))
                 
     return overlapping_segments
+
+def header_seg_overlap(fileName):
+    file=lief.parse(fileName)
+    liste_couple_headers=[(0,file.header.header_size), (file.header.program_header_offset, file.header.program_header_size), (file.header.section_header_offset, file.header.section_header_size)]
+    for h in liste_couple_headers :
+        for s in file.segments :
+            if(overlap(h,(s.file_offset,s.virtual_size))) :
+                return True
+    return False
+            
     
 def overlap(seg1,seg2) : #seg1 and seg2 are couples (start, size)
     #print(seg1)
@@ -351,7 +361,7 @@ def main(fileName) :
         print("Weird : one or more segments in the program header are pointing outside the file\n")
         number_anomalies_found+=1
     else :
-        print("check program header pointing inside the file ok\n")
+        print("Check program header pointing inside the file ok\n")
     number_tests_performed+=1  
     
     h_overlap=header_overlap(fileName)
@@ -361,6 +371,16 @@ def main(fileName) :
     else :
         print("Check headers not overlapping ok\n")
     number_tests_performed+=1
+    
+    hso=header_seg_overlap(fileName)
+    if(hso) :
+        print("Weird : some segments are overlapping with some headers\n")
+        number_anomalies_found+=1
+    else :
+        print("Check segments and headers not overlapping together ok\n")
+    number_tests_performed+=1
+        
+    
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 
