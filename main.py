@@ -173,7 +173,7 @@ def main(fileName) :
     number_tests_performed+=1
     
     entry_sec=entry_section(fileName)
-    if(entry_sec):
+    if(entry_sec==False):
         print("Weird : The entry point is neither in .text section nor in .code section\n")
         number_anomalies_found+=1
     else :
