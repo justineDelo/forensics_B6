@@ -126,6 +126,14 @@ def segments_flag(fileName) :
                     out_msg+="   weird flags ("+str(s.flags)+") for "+str(s.type)[14:]+" section"
     return out_msg            
 
+def number_functions(fileName) :
+    file=lief.parse(fileName)
+    thresh=10
+    nb=len(file.imported_functions)
+    if(nb<=thresh) :
+        return False, nb
+    else :
+        return True, nb
 
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
@@ -242,7 +250,15 @@ def main(fileName) :
     else :
         print("Segments Permissions ok\n")
     number_tests_performed+=1
-
+    
+    nb_func=number_functions(fileName)
+    if(nb_func[0]== False) :
+        print("Weird there are very few functions detected : only "+str(nb_func[1])+" functions detected\n")
+        number_anomalies_found+=1
+    else :
+        print("Check number of functions detected ok : there are "+str(nb_func[1]) + "functions detected\n")
+    number_tests_performed+=1
+    
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 
