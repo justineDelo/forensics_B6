@@ -319,7 +319,7 @@ def main(fileName) :
     
     nb_func=number_functions(fileName)
     if(nb_func[0]== False) :
-        print("Weird there are very few functions detected : only "+str(nb_func[1])+" functions detected\n")
+        print("Weird there are very few functions detected (this code may be packed): only "+str(nb_func[1])+" functions detected\n")
         number_anomalies_found+=1
     else :
         print("Check number of functions detected ok : there are "+str(nb_func[1]) + "functions detected\n")
