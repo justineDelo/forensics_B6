@@ -121,7 +121,7 @@ def number_functions(fileName) :
         return True, nb
         
 def interpreter_chek(fileName) :
-    interpreter_white_list=['/lib64/ld-linux-x86-64.so.2','/lib/ld-linux.so.2']
+    interpreter_white_list=['/lib64/ld-linux-x86-64.so.2','/lib/ld-linux.so.2','/lib32/ld-linux.so.2','/lib32/ld-2.23.so']
     file=lief.parse(fileName)
     if not(file.has_interpreter):
         return "No interpreter"

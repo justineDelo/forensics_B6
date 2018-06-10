@@ -50,7 +50,7 @@ Few entries in the import table
 ✔
 Missing or compressed string table
 ✔
-Very small code  
+Very small code
 
 ✔
 Weird sections names 
