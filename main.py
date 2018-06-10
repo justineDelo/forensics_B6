@@ -76,11 +76,10 @@ def segments_overlap(fileName, virtual_or_physical) :
         else :
             couple=(s.physical_address, s.physical_size)
         liste_couples.append(couple)
-        
+    
     for seg1 in range(0, len(liste_couples)-1) :
         for seg2 in range(seg1+1, len(liste_couples)) :
             if (overlap(liste_couples[seg1], liste_couples[seg2]) ):
-      
                 overlapping_segments.append((seg1, seg2))
                 
     return overlapping_segments
@@ -88,22 +87,8 @@ def segments_overlap(fileName, virtual_or_physical) :
 def overlap(seg1,seg2) : #seg1 and seg2 are couples (start, size)
     #print(seg1)
     #print(seg2)
-    if (seg1[0]<seg2[0]) :
-        if seg2[0]<seg1[0]+seg1[1] :
-            #print("overlap")
-            return True
-        else :
-            #print("no overlap")
-            return False
-    elif (seg2[0]<seg1[0]) :
-        if(seg1[0]<seg2[0]+seg2[1]) :
-            #print("overlap2")
-            return True
-        else :
-            #print("no overlap2")
-            return False
-    else :
-        return True
+    return ((seg1[0]<seg2[0] and seg1[0]+seg1[1]<seg2[0]+seg2[1] and seg2[0]<seg1[0]+seg1[1]) or (seg2[0]<seg1[0] and seg2[0]+seg2[1]<seg1[0]+seg1[1] and seg1[0]<seg2[0]+seg2[1]))
+    #check if ( start1<start2 and end1<end2 and start2<end1 ), so if (start1<start2<end1 and end1<end2)   (and the invers)
 
 usual_segments_flag={'SEGMENT_TYPES.PHDR':5,'SEGMENT_TYPES.INTERP':4,'SEGMENT_TYPES.DYNAMIC':6,'SEGMENT_TYPES.NOTE':4,'SEGMENT_TYPES.GNU_EH_FRAME':4,'SEGMENT_TYPES.GNU_STACK':6,'SEGMENT_TYPES.GNU_RELRO':4 }
 
