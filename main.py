@@ -210,28 +210,31 @@ def main(fileName) :
     
     
     #checks
+    
+    sec_hd = section_header(fileName)
+    if(not(sec_hd)) :
+        print("Weird : nos section headers. This can prevent other checks to work well\n")
+        number_anomalies_found+=1
+    else :
+        print("Check section headers ok\n")
+    number_tests_performed+=1
+    
     symbols=check_symbols(fileName)
     if(symbols==False) :
         print("Weird : no symbols\n")
         number_anomalies_found+=1
     else :
-        print("check symbols ok\n")
+        print("Check symbols ok\n")
     number_tests_performed+=1
     
-    sec_hd = section_header(fileName)
-    if(not(sec_hd)) :
-        print("Weird : nos section headers\n")
-        number_anomalies_found+=1
-    else :
-        print("check section headers ok\n")
-    number_tests_performed+=1
+
     
     start=start_libc(fileName)
     if(start=="bad") :
         print("Weird : start_libc not called\n")
         number_anomalies_found+=1
     elif (start=="ok"):
-        print("check libc_start ok\n")
+        print("Check libc_start ok\n")
     else :
         print("Weird : is libc_start called ? " +start+"\n")
         number_anomalies_found+=1
@@ -242,7 +245,7 @@ def main(fileName) :
         print("Weird : entry point is not _start\n")
         number_anomalies_found+=1
     else :
-        print("check entry_point ok\n")
+        print("Check entry_point ok\n")
     number_tests_performed+=1
     
     entry_sec=entry_section(fileName)
@@ -255,7 +258,7 @@ def main(fileName) :
     
     entrop=entropy(fileName)
     if (not(entrop)) :
-        print("check entropy ok (all section's entropy under 6)\n")
+        print("Check entropy ok (all section's entropy under 6)\n")
     else :
         print("Weird : some sections have high entropy, this code may be packed")
         print(" These are the sections with high entropies : ")
@@ -268,7 +271,7 @@ def main(fileName) :
     f=lief.parse(fileName)
     overlapping=segments_overlap(fileName,0)
     if(not(overlapping)) :
-        print("check no overlapping segments (virtual addresses) ok\n")
+        print("Check no overlapping segments (virtual addresses) ok\n")
     else :
         print("Weird : there are some overlapping segments detected (virtual addresses)")
         ans=""
@@ -288,7 +291,7 @@ def main(fileName) :
     
     overlapping2=segments_overlap(fileName,1)
     if(not(overlapping2)) :
-        print("check no overlapping segments (physical addresses) ok\n")
+        print("Check no overlapping segments (physical addresses) ok\n")
     else :
         print("Weird : there are some overlapping segments detected (physical addresses)")
         ans=""
@@ -311,7 +314,7 @@ def main(fileName) :
         print("   "+segFlag)
         number_anomalies_found+=1
     else :
-        print("Segments Permissions ok\n")
+        print("Check segments Permissions ok\n")
     number_tests_performed+=1
     
     nb_func=number_functions(fileName)
@@ -327,7 +330,7 @@ def main(fileName) :
         print("Weird : "+interCheck+"\n")
         number_anomalies_found+=1
     else :
-        print("Interpreter check ok\n")
+        print("Check interpreter check ok\n")
     number_tests_performed+=1
     
     sdm=size_disk_memory(fileName)
