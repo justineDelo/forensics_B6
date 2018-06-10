@@ -39,10 +39,10 @@ def entry_point_start(fileName) :
 def entry_section(fileName):
     file=lief.parse(fileName)
     entry=file.entrypoint
-        for s in file.sections:
-            if s.name==".text" or s.name==".code":
-                if(entry>=s.offset and entry<=s.size+s.offset):
-                    return True
+    for s in file.sections:
+        if s.name==".text" or s.name==".code":
+            if(entry>=s.offset and entry<=s.size+s.offset):
+                return True
     return False
 
 def entropy(fileName) :
@@ -173,7 +173,7 @@ def main(fileName) :
     number_tests_performed+=1
     
     entry_sec=entry_section(fileName)
-    if(entry_sec)
+    if(entry_sec):
         print("Weird : The entry point is neither in .text section nor in .code section\n")
         number_anomalies_found+=1
     else :
