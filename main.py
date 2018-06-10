@@ -155,6 +155,22 @@ def size_disk_memory(fileName) :
     else :
         return True
 
+def missing_strtables(fileName):
+    file=lief.parse(fileName)
+    missing=[]
+    sizeNull=[]
+    sections=[s.name for s in file.sections]
+    file=lief.parse(fileName)
+    if (".strtab" not in sections) :
+        missing.append(".strtab")
+    elif (file.get_section(".strtab").size==0) :
+        sizeNull.append(".strtab")
+    if(".shstrtab" not in sections) :
+        missing.append(".shstrtab")
+    elif (file.get_section(".shstrtab").size==0) :
+        sizeNull.append(".shstrtab")
+    return missing, sizeNull
+
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
     
@@ -294,10 +310,30 @@ def main(fileName) :
         print("Weird : code size on memory higher than on disk. A packer may have been used\n")
         number_anomalies_found+=1
     number_tests_performed+=1    
+    
+    strtbl=missing_strtables(fileName)
+   
+    if(not(strtbl[0]) and not(strtbl[1])) :
+        print("Check string table's presence ok\n")
+    else :
+        number_anomalies_found+=1
+        if(strtbl[0]) :
+            print("Weird : some string tables are missing (a packer may have been used): ")
+            for tb in strtbl[0] :
+                print(tb)
+            print("\n")
+        if(strtbl[1]) :
+            print("Weird : some string tables have a size null (a packer may have been used) : ")
+            for tb in strtbl[1] :
+                print(tb)
+            print("\n")
+    number_tests_performed+=1  
+    
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 
 
+ 
 
 # arguments parser to be able to use the program in command line
 import argparse
