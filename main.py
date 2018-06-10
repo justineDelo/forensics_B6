@@ -64,6 +64,13 @@ def section_header(fileName) :
     else :
         return True
 
+def header_overlap(fileName) :
+    file=lief.parse(fileName)
+    if(file.header.program_header_offset<file.header.header_size) :
+        return True
+    if(file.header.section_header_offset<file.header.program_header_offset+file.header.program_header_size) :
+        return True
+    return False
 
 def segments_overlap(fileName, virtual_or_physical) :
     file=lief.parse(fileName)
@@ -346,6 +353,14 @@ def main(fileName) :
     else :
         print("check program header pointing inside the file ok\n")
     number_tests_performed+=1  
+    
+    h_overlap=header_overlap(fileName)
+    if(h_overlap) :
+        print("Weird : two headers at least are overlapping\n")
+        number_anomalies_found+=1
+    else :
+        print("Check headers not overlapping ok\n")
+    number_tests_performed+=1
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 
