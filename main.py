@@ -132,6 +132,29 @@ def interpreter_chek(fileName) :
         else:
             return False
 
+def size_disk_memory(fileName) :
+    file=lief.parse(fileName)
+    size_disk = 0
+    size_mem =0
+    sections=[s.name for s in file.sections]
+    for seg in file.segments:
+        if (".text" in sections and ".code" in sections) :
+            if (file.get_section(".text") in seg or file.get_section(".code") in seg ):
+                size_disk+=seg.physical_size
+                size_mem+=seg.virtual_size
+        elif (".text" in sections and not(".code" in sections)):
+            if (file.get_section(".text") in seg ):
+                size_disk+=seg.physical_size
+                size_mem+=seg.virtual_size
+        elif (".code" in sections and not(".text" in sections)):
+            if (file.get_section(".code") in seg ):
+                size_disk+=seg.physical_size
+                size_mem+=seg.virtual_size
+    if(size_mem>size_disk) :
+        return False
+    else :
+        return True
+
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
     
@@ -264,6 +287,13 @@ def main(fileName) :
         print("Interpreter check ok\n")
     number_tests_performed+=1
     
+    sdm=size_disk_memory(fileName)
+    if(sdm) :
+        print("Check size on memory not higher than on disk ok\n")
+    else :
+        print("Weird : code size on memory higher than on disk. A packer may have been used\n")
+        number_anomalies_found+=1
+    number_tests_performed+=1    
     #conclusion
     print("End of check : "+str(number_anomalies_found)+" anomalies were found after performing "+str(number_tests_performed)+" tests")
     return 
