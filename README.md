@@ -40,8 +40,13 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 ### Other ideas
 
 * signes d'un packer :
+	fait :
 Very few functions
 ✔
+Sections with very high entropy 
+
+	a faire :
+	
 Few entries in the import table
 ✔
 Missing or compressed string table
@@ -52,7 +57,7 @@ Code section that requires more space in memory than on disk
 ✔
 Weird sections names 
 ✔
-Sections with very high entropy 
+
 ### Needed :
 * C programs with statically and dynamically linked libraries to make tests --> quite URGENT 
 
