@@ -134,6 +134,18 @@ def number_functions(fileName) :
         return False, nb
     else :
         return True, nb
+        
+def interpreter_chek(fileName) :
+    interpreter_white_list=['/lib64/ld-linux-x86-64.so.2','/lib/ld-linux.so.2']
+    file=lief.parse(fileName)
+    if not(file.has_interpreter):
+        return "No interpreter"
+    else:
+        interpreter=file.interpreter
+        if not(interpreter in interpreter_white_list):
+            return "Unknown interpreter(loader) -> "+interpreter
+        else:
+            return False
 
 def main(fileName) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
@@ -245,7 +257,7 @@ def main(fileName) :
     segFlag=segments_flag(fileName)
     if(segFlag) :
         print("Weird : Unusual segments Permissions\n")
-        print(segFlag)
+        print("   "+segFlag)
         number_anomalies_found+=1
     else :
         print("Segments Permissions ok\n")
@@ -257,6 +269,14 @@ def main(fileName) :
         number_anomalies_found+=1
     else :
         print("Check number of functions detected ok : there are "+str(nb_func[1]) + "functions detected\n")
+    number_tests_performed+=1
+    
+    interCheck=interpreter_chek(fileName)
+    if(interCheck) :
+        print("Weird : "+interCheck+"\n")
+        number_anomalies_found+=1
+    else :
+        print("Interpreter check ok\n")
     number_tests_performed+=1
     
     #conclusion

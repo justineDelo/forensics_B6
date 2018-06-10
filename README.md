@@ -29,7 +29,6 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 * wrong string table index
 * overlapping headers/segments
 
-* different interpreter
 * session header table pointing beyond file data
 
 * catch errors
@@ -72,4 +71,5 @@ Weird sections names
 * entry point not in .code or .text segment
 * unusual entropy of a section
 * check if section header 
+* different interpreter
 * strange segment permissions
