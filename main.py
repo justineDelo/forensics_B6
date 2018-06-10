@@ -47,9 +47,8 @@ def entry_section(fileName):
 
 def entropy(fileName) :
     threshold=6;
-    liste_out=[]
-
-    
+    liste_out=[] 
+		file=lief.parse(fileName)
     for s in file.sections :
         if s.entropy>=threshold :
             liste_out.append((s.name, s.entropy))
