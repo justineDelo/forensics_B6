@@ -42,7 +42,8 @@ Write an elf-anomaly tool that prints a list of checks to report the presence/ab
 Very few functions
 ✔
 Sections with very high entropy 
-
+✔
+Code section that requires more space in memory than on disk
 	a faire :
 	
 Few entries in the import table
@@ -50,8 +51,7 @@ Few entries in the import table
 Missing or compressed string table
 ✔
 Very small code  
-✔
-Code section that requires more space in memory than on disk
+
 ✔
 Weird sections names 
 ✔
