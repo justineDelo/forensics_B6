@@ -198,13 +198,13 @@ def pgm_h_outside(fileName):
     return False
     
 
-def main(fileName) :
+def main(fileName, okMsg) :
     ### fileName has to be a string either with a full path towards the elf file or with a relative path from the directory containing the main.py file
     
    
     #initialisations counters
     number_anomalies_found=0
-    number_tests_performed=0
+    number_tests_performed=0 
     
     # open file
     
@@ -215,7 +215,7 @@ def main(fileName) :
     if(not(sec_hd)) :
         print("Weird : nos section headers. This can prevent other checks to work well\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check section headers ok\n")
     number_tests_performed+=1
     
@@ -223,18 +223,17 @@ def main(fileName) :
     if(symbols==False) :
         print("Weird : no symbols\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check symbols ok\n")
     number_tests_performed+=1
-    
-
     
     start=start_libc(fileName)
     if(start=="bad") :
         print("Weird : start_libc not called\n")
         number_anomalies_found+=1
     elif (start=="ok"):
-        print("Check libc_start ok\n")
+        if (okMsg):
+            print("Check libc_start ok\n")
     else :
         print("Weird : is libc_start called ? " +start+"\n")
         number_anomalies_found+=1
@@ -244,7 +243,7 @@ def main(fileName) :
     if(entry==False) :
         print("Weird : entry point is not _start\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check entry_point ok\n")
     number_tests_performed+=1
     
@@ -252,13 +251,14 @@ def main(fileName) :
     if(entry_sec==False):
         print("Weird : The entry point is neither in .text section nor in .code section\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check entry point section ok\n")
     number_tests_performed+=1
     
     entrop=entropy(fileName)
     if (not(entrop)) :
-        print("Check entropy ok (all section's entropy under 6)\n")
+        if (okMsg):
+            print("Check entropy ok (all section's entropy under 6)\n")
     else :
         print("Weird : some sections have high entropy, this code may be packed")
         print(" These are the sections with high entropies : ")
@@ -271,7 +271,8 @@ def main(fileName) :
     f=lief.parse(fileName)
     overlapping=segments_overlap(fileName,0)
     if(not(overlapping)) :
-        print("Check no overlapping segments (virtual addresses) ok\n")
+        if (okMsg):
+            print("Check no overlapping segments (virtual addresses) ok\n")
     else :
         print("Weird : there are some overlapping segments detected (virtual addresses)")
         ans=""
@@ -291,7 +292,8 @@ def main(fileName) :
     
     overlapping2=segments_overlap(fileName,1)
     if(not(overlapping2)) :
-        print("Check no overlapping segments (physical addresses) ok\n")
+        if (okMsg):
+            print("Check no overlapping segments (physical addresses) ok\n")
     else :
         print("Weird : there are some overlapping segments detected (physical addresses)")
         ans=""
@@ -313,7 +315,7 @@ def main(fileName) :
         print("Weird : Unusual segments Permissions\n")
         print("   "+segFlag)
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check segments Permissions ok\n")
     number_tests_performed+=1
     
@@ -321,7 +323,7 @@ def main(fileName) :
     if(nb_func[0]== False) :
         print("Weird there are very few functions detected (this code may be packed): only "+str(nb_func[1])+" functions detected\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check number of functions detected ok : there are "+str(nb_func[1]) + "functions detected\n")
     number_tests_performed+=1
     
@@ -329,13 +331,14 @@ def main(fileName) :
     if(interCheck) :
         print("Weird : "+interCheck+"\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check interpreter check ok\n")
     number_tests_performed+=1
     
     sdm=size_disk_memory(fileName)
     if(sdm) :
-        print("Check size on memory not higher than on disk ok\n")
+        if(okMsg):
+            print("Check size on memory not higher than on disk ok\n")
     else :
         print("Weird : code size on memory higher than on disk. A packer may have been used\n")
         number_anomalies_found+=1
@@ -344,7 +347,8 @@ def main(fileName) :
     strtbl=missing_strtables(fileName)
    
     if(not(strtbl[0]) and not(strtbl[1])) :
-        print("Check string table's presence ok\n")
+        if(okMsg):
+            print("Check string table's presence ok\n")
     else :
         number_anomalies_found+=1
         if(strtbl[0]) :
@@ -363,7 +367,7 @@ def main(fileName) :
     if(out) :
         print("Weird : one or more segments in the program header are pointing outside the file\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check program header pointing inside the file ok\n")
     number_tests_performed+=1  
     
@@ -371,7 +375,7 @@ def main(fileName) :
     if(h_overlap) :
         print("Weird : two headers at least are overlapping\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check headers not overlapping ok\n")
     number_tests_performed+=1
     
@@ -379,7 +383,7 @@ def main(fileName) :
     if(hso) :
         print("Weird : some segments are overlapping with some headers\n")
         number_anomalies_found+=1
-    else :
+    elif (okMsg) :
         print("Check segments and headers not overlapping together ok\n")
     number_tests_performed+=1
         
@@ -395,10 +399,12 @@ import argparse
 import os # to check if file exists
 parser = argparse.ArgumentParser()
 parser.add_argument("fileName")
+parser.add_argument('-w', '--onlyWeird', action='store_true',
+                    help='print only the weird detections')
 args = parser.parse_args()
 if(os.path.isfile(args.fileName)) :
     
-    print("Examining file : " +str(args.fileName)) 
-    main(args.fileName) 
+    print("Examining file : " +str(args.fileName) +"\n") 
+    main(args.fileName,not args.onlyWeird) 
 else :
     print("no such file : " +args.fileName)
