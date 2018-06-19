@@ -33,7 +33,7 @@ Elf-anomaly tool that prints a list of checks to report the presence/absence of 
 Work with python3 and lief.
 
 use:
-$ python main.py <filename> [-w]
+$ python elfad.py <filename> [-w]
 
 option : 
 	-w to print only anomalies (by default print result of each test)
