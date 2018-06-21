@@ -3,7 +3,7 @@
 """
 Created on Mon May 21 18:01:56 2018
 
-@author: justine and paul
+@author: Justine Delomenie and Paul Fournier
 """
 import subprocess # to be able to use command line tools
 import lief

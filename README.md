@@ -43,4 +43,5 @@ Work with python3 and lief.
 > 	-f : to change the value of threshold to consider that there are too few fucntions, default value is 10
 > 	NB : -p -w : it prints only the anomalies for the packer signs
 
-	
+#### Authors
+The authors of this program are Justine DELOMENIE and Paul FOURNIER. It was done in a project for the Forensics Eurecom course.	
