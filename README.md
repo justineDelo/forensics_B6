@@ -37,10 +37,10 @@ Work with python3 and lief.
 > $ python elfad.py <filename> [-w] [-p] [-e] [-f]
 
 * options : 
->	-w to print only anomalies (by default print result of each test)
->	-p to print only checks related to packer detection
->	-e to change the value of entropy threshold, default value is 6
-> 	-f : to change the value of threshold to consider that there are too few fucntions, default value is 10
+>	-w to print only anomalies (by default print result of each test)   
+>	-p to print only checks related to packer detection  
+>	-e to change the value of entropy threshold, default value is 6  
+> 	-f : to change the value of threshold to consider that there are too few fucntions, default value is 10  
 > 	NB : -p -w : it prints only the anomalies for the packer signs
 
 #### Authors
